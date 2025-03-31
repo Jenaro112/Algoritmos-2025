@@ -12,4 +12,4 @@ print('-------------------------------------------')
 print(f'El producto es {result}')
 print('-------------------------------------------')
 
-""" producto(x,y) = producto(x,y-1) --> producto(x,y) y == 1 = x """
+""" producto(x,y) = producto(x,y-1) --> producto(x,y) y == 1 = x """ #!ESTE ES EL CODIGO CORRECTO, APLICARLO
