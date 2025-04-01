@@ -1,15 +1,10 @@
 """ Ejercicio 3 """
 
 def producto(x,y):
-    if (x == int(x)) and (y == int(y)):
-        return x * y
+    if y == 1:
+        return x
     else:
-        print('-------------------------------------------')
-        print('los numeros no son enteros')
+        return x + producto(x,y-1)
 
-result = producto(5,7)
-print('-------------------------------------------')
-print(f'El producto es {result}')
-print('-------------------------------------------')
-
-""" producto(x,y) = producto(x,y-1) --> producto(x,y) y == 1 = x """ #!ESTE ES EL CODIGO CORRECTO, APLICARLO
+resultado = producto(2,3)
+print(resultado)
