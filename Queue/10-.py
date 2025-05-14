@@ -13,6 +13,12 @@ b. escribir una función que muestre todas las notificaciones de Twitter, cuyo m
 c. utilizar una pila para almacenar temporáneamente las notificaciones producidas entre las 11:43 y las 15:57, y determinar cuántas son.
 """
 
+cola_notificaciones = Queue()
+cola_notificaciones.put({'hora': '11:45', 'aplicacion': 'Facebook', 'mensaje': 'Nueva foto etiquetada'})
+cola_notificaciones.put({'hora': '12:30', 'aplicacion': 'Twitter', 'mensaje': 'Aprendiendo Python es divertido'})
+cola_notificaciones.put({'hora': '14:00', 'aplicacion': 'Instagram', 'mensaje': 'Nueva historia publicada'})
+cola_notificaciones.put({'hora': '16:00', 'aplicacion': 'Twitter', 'mensaje': 'Python es increíble'})
+
 def eliminar_notificaciones_facebook(cola):
     tamaño = cola.qsize()
     for _ in range(tamaño):
@@ -48,11 +54,6 @@ def imprimir_notificaciones(cola, titulo):
         print(f"{Fore.LIGHTWHITE_EX}[{notificacion['hora']}] {Fore.LIGHTMAGENTA_EX}{notificacion['aplicacion']}: {Fore.LIGHTCYAN_EX}{notificacion['mensaje']}{Style.RESET_ALL}")
     print("-" * 50)
 
-cola_notificaciones = Queue()
-cola_notificaciones.put({'hora': '11:45', 'aplicacion': 'Facebook', 'mensaje': 'Nueva foto etiquetada'})
-cola_notificaciones.put({'hora': '12:30', 'aplicacion': 'Twitter', 'mensaje': 'Aprendiendo Python es divertido'})
-cola_notificaciones.put({'hora': '14:00', 'aplicacion': 'Instagram', 'mensaje': 'Nueva historia publicada'})
-cola_notificaciones.put({'hora': '16:00', 'aplicacion': 'Twitter', 'mensaje': 'Python es increíble'})
 
 imprimir_notificaciones(cola_notificaciones, "Lista de notificaciones:")
 
