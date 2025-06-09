@@ -100,6 +100,7 @@ for superhero in superheroes:
 #A eliminar a Groot
 print(list_superhero.delete_value('Groot', 'name'))
 print()
+
 #B mostrar año aparicion wolverine
 index = list_superhero.search('Wolverine', 'name')
 if index:
