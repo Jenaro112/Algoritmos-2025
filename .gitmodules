@@ -1,0 +1,3 @@
+[submodule "Profesor"]
+	path = Profesor
+	url = https://github.com/belwalter/algoritmos_2025.git
