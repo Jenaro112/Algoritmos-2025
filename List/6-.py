@@ -1,4 +1,7 @@
-"""  
+"""
+------------------------------
+|       Trabajo N° 6         |
+------------------------------
 Dada una lista de superhéroes de comics, de los cuales se conoce su nombre, año aparición, casa de comic a la que pertenece (Marvel o DC) y biografía, implementar la funciones necesarias para poder realizar las siguientes actividades:
 -   a. eliminar el nodo que contiene la información de Linterna Verde;
 -   b. mostrar el año de aparición de Wolverine;
@@ -12,124 +15,144 @@ Dada una lista de superhéroes de comics, de los cuales se conoce su nombre, añ
 """
 
 from list_ import List
+from super_heroes_data import superheroes
 
-superheroes = List([
-    {"name": "Linterna Verde", "alias": "Green Lantern", "real_name": "Hal Jordan", "short_bio": "Un héroe con anillo de poder", "first_appearance": 1959, "comic_house": "DC"},
-    {"name": "Wolverine", "alias": "Logan", "real_name": "James Howlett", "short_bio": "Héroe con garras de adamantium", "first_appearance": 1974, "comic_house": "Marvel"},
-    {"name": "Dr Strange", "alias": "Doctor Strange", "real_name": "Stephen Strange", "short_bio": "Hechicero supremo de Marvel", "first_appearance": 1963, "comic_house": "Marvel"},
-    {"name": "Capitana Marvel", "alias": "Carol Danvers", "real_name": "", "short_bio": "", "first_appearance": 1968, "comic_house": "Marvel"},
-    {"name": "Mujer Maravilla", "alias": "", "real_name": "", "short_bio": "", "first_appearance": 1941, "comic_house": "DC"},
-    {"name": "Flash", "alias": "", "real_name": "", "short_bio": "", "first_appearance": 1940, "comic_house": "DC"},
-    {"name": "Star-Lord", "alias": "", "real_name": "", "short_bio": "", "first_appearance": 1976, "comic_house": 'Marvel'},
-])
+class Superhero:
+    def __init__(self, nombre, anio_aparicion, casa_comic, biografia):
+        self.nombre = nombre
+        self.anio_aparicion = anio_aparicion
+        self.casa_comic = casa_comic
+        self.biografia = biografia
 
-def linterna_verde(lista: List) -> List:
-    """
-    Elimina el nodo que contiene la información de Linterna Verde.
-    """
-    return lista.delete_value('Linterna Verde', 'name')
+    def __str__(self):
+        return (f"Nombre: {self.nombre}\n"
+                f"Año de aparición: {self.anio_aparicion}\n"
+                f"Casa de cómic: {self.casa_comic}\n"
+                f"Biografía: {self.biografia}")
 
-def año_wolverine(lista: List) -> str:
-    """
-    Muestra el año de aparición de Wolverine.
-    """
-    index = lista.search('Wolverine', 'name')
-    if index is not None:
-        return lista[index].first_appearance
+# a. eliminar el nodo que contiene la información de Linterna Verde
+def Punto_A(lista):
+    print("PUNTO A")
+    eliminado = lista.delete_value("Linterna Verde", "nombre")
+    if eliminado:
+        print(f"Se eliminó a: {eliminado.nombre}")
     else:
-        return 'Wolverine no está en la lista'
+        print("Linterna Verde no se encontró en la lista.")
 
-def Dr_Strange(lista: List) -> str:
-    """
-    Cambia la casa de Dr. Strange a Marvel.
-    """
-    index = lista.search('Dr Strange', 'name')
-    if index is not None:
-        lista[index].comic_house = 'Marvel'
-        return f"Dr. Strange ahora pertenece a {lista[index].comic_house}"
+# b. mostrar el año de aparición de Wolverine
+def Punto_B(lista):
+    print("PUNTO B")
+    index_wolverine = lista.search("Wolverine", "nombre")
+    if index_wolverine is not None:
+        print(f"Wolverine apareció en: {lista[index_wolverine].anio_aparicion}")
     else:
-        return 'Dr. Strange no está en la lista'
+        print("Wolverine no se encontró en la lista.")
+
+# c. cambiar la casa de Dr. Strange a Marvel
+def Punto_C(lista):
+    print("PUNTO C")
+    index_strange = lista.search("Dr Strange", "nombre")
+    if index_strange is not None:
+        heroe = lista[index_strange]
+        print(f"Casa original de Dr. Strange: {heroe.casa_comic}")
+        heroe.casa_comic = "Marvel"
+        print(f"Nueva casa de Dr. Strange: {heroe.casa_comic}")
+    else:
+        print("Dr. Strange no se encontró en la lista.")
+
+# d. mostrar el nombre de aquellos superhéroes que en su biografía menciona la palabra “traje” o “armadura”
+def Punto_D(lista):
+    print("PUNTO D")
+    for heroe in lista:
+        if "suit" in heroe.biografia.lower() or "armor" in heroe.biografia.lower():
+            print(heroe.nombre)
+
+# e. mostrar el nombre y la casa de los superhéroes cuya fecha de aparición sea anterior a 1963
+def Punto_E(lista):
+    print("PUNTO E")
+    for heroe in lista:
+        if heroe.anio_aparicion < 1963:
+            print(f"{heroe.nombre} ({heroe.casa_comic})")
+
+# f. mostrar la casa a la que pertenece Capitana Marvel y Mujer Maravilla
+def Punto_F(lista):
+    print("PUNTO F")
+    for nombre_heroe in ["Capitana Marvel", "Mujer Maravilla"]:
+        index = lista.search(nombre_heroe, "nombre")
+        if index is not None:
+            print(f"{nombre_heroe} pertenece a: {lista[index].casa_comic}")
+        else:
+            print(f"{nombre_heroe} no se encontró.")
+
+# g. mostrar toda la información de Flash y Star-Lord
+def Punto_G(lista):
+    print("PUNTO G")
+    for nombre_heroe in ["Flash", "Star-Lord"]:
+        index = lista.search(nombre_heroe, "nombre")
+        if index is not None:
+            print(lista[index])
+            print()
+        else:
+            print(f"{nombre_heroe} no se encontró.")
+
+# h. listar los superhéroes que comienzan con la letra B, M y S
+def Punto_H(lista):
+    print("PUNTO H")
+    for heroe in lista:
+        if heroe.nombre.startswith(('B', 'M', 'S')):
+            print(heroe.nombre)
+
+# i. determinar cuántos superhéroes hay de cada casa de comic
+def Punto_I(lista):
+    print("PUNTO I")
+    conteo_casas = {}
+    for heroe in lista:
+        conteo_casas[heroe.casa_comic] = conteo_casas.get(heroe.casa_comic, 0) + 1
     
-def Traje_Armadura(lista: List) -> List:
-    """
-    Muestra el nombre de aquellos superhéroes que en su biografía menciona la palabra “traje” o “armadura”.
-    """
-    result = List()
-    for hero in lista:
-        if 'traje' in hero.short_bio.lower() or 'armadura' in hero.short_bio.lower():
-            result.append(hero.name)
-    return result
+    for casa, cantidad in conteo_casas.items():
+        print(f"{casa}: {cantidad} superhéroes")
 
-def antes1963(lista: List) -> List:
-    """
-    Muestra el nombre y la casa de los superhéroes cuya fecha de aparición sea anterior a 1963.
-    """
-    result = List()
-    for hero in lista:
-        if hero.first_appearance < 1963:
-            result.append(f"{hero.name} - {hero.comic_house}")
-    return result
+if __name__ == "__main__":
+    lista_superheroes = List()
 
-def CapitanaMarvel_WonderWoman(lista: List) -> List:
-    """
-    Muestra la casa a la que pertenece Capitana Marvel y Mujer Maravilla.
-    """
-    result = List()
-    for hero in lista:
-        if hero.name in ['Capitana Marvel', 'Mujer Maravilla']:
-            result.append(f"{hero.name} - {hero.comic_house}")
-    return result
+    # Criterios de ordenación/búsqueda
+    def by_name(hero):
+        return hero.nombre
 
-def Flash_StarLord(lista: List) -> List:
-    """
-    Muestra toda la información de Flash y Star-Lord.
-    """
-    result = List()
-    for hero in lista:
-        if hero.name in ['Flash', 'Star-Lord']:
-            result.append(hero)
-    return result
+    lista_superheroes.add_criterion('nombre', by_name)
 
-def B_M_S(lista: List) -> List:
-    """
-    Lista los superhéroes que comienzan con la letra B, M y S.
-    """
-    result = List()
-    for hero in lista:
-        if hero.name[0] in ['B', 'M', 'S']:
-            result.append(hero.name)
-    return result
+    # Cargar datos únicamente desde super_heroes_data.py
+    for data in superheroes:
+        # Asignamos casa de cómic. El archivo solo contiene Marvel.
+        # Hacemos una excepción para Dr. Strange para que el punto C tenga sentido.
+        casa = "Marvel"
+        if data["name"] == "Dr Strange":
+            casa = "DC"
 
-def MCU_DCU(lista: List) -> dict:
-    """
-    Determina cuántos superhéroes hay de cada casa de comic.
-    """
-    count = {'Marvel': 0, 'DC': 0}
-    for hero in lista:
-        if hero.comic_house in count:
-            count[hero.comic_house] += 1
-    return count
+        lista_superheroes.append(Superhero(
+            nombre=data["name"],
+            anio_aparicion=data["first_appearance"],
+            casa_comic=casa,
+            biografia=data["short_bio"]
+        ))
 
-print("- " * 50) 
-linterna_verde(superheroes)
-print("- " * 50) 
-año_wolverine(superheroes)
-print("- " * 50)
-print(Dr_Strange(superheroes))
-print("- " * 50)
-print(Traje_Armadura(superheroes))
-print("- " * 50)
-print(antes1963(superheroes))
-print("- " * 50)
-print(CapitanaMarvel_WonderWoman(superheroes))
-print("- " * 50)
-print(Flash_StarLord(superheroes))
-print("- " * 50)
-print(B_M_S(superheroes))
-print("- " * 50)
-print(MCU_DCU(superheroes))
-print("- " * 50)
-
-
-#! Terminar
-
+    # Ejecutar cada punto del ejercicio
+    print('-' * 30)
+    Punto_A(lista_superheroes)
+    print('-' * 30)
+    Punto_B(lista_superheroes)
+    print('-' * 30)
+    Punto_C(lista_superheroes)
+    print('-' * 30)
+    Punto_D(lista_superheroes)
+    print('-' * 30)
+    Punto_E(lista_superheroes)
+    print('-' * 30)
+    Punto_F(lista_superheroes)
+    print('-' * 30)
+    Punto_G(lista_superheroes)
+    print('-' * 30)
+    Punto_H(lista_superheroes)
+    print('-' * 30)
+    Punto_I(lista_superheroes)
+    print('-' * 30)
