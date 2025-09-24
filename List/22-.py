@@ -1,4 +1,7 @@
 """ 
+------------------------------
+|       Trabajo N° 22        |
+------------------------------
 Se dispone de una lista de todos los Jedi, de cada uno de estos se conoce su nombre, maestros,
 colores de sable de luz usados y especie. implementar las funciones necesarias para resolver las
 actividades enumeradas a continuación:

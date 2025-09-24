@@ -1,1 +1,0 @@
-    print(fib(i))
