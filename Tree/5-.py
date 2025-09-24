@@ -57,7 +57,7 @@ def count_nodes(root):
         return 0
     return 1 + count_nodes(root.left) + count_nodes(root.right)
 
-# --- Funciones para cada punto del ejercicio ---
+
 
 def Punto_A():
     """Punto A: Carga de datos en el árbol."""
@@ -138,7 +138,7 @@ def Punto_G(mcu_tree):
     print("\n   [ VILLANOS ]")
     in_order_names_only(villains_tree.root)
 
-# --- Inicio del script principal ---
+
 if __name__ == "__main__":
     print("-" * 40)
     mcu_tree = Punto_A()
