@@ -1,7 +1,5 @@
 from typing import Any, Optional
 
-import sys
-
 from Profesor import graph
 
 """ 
