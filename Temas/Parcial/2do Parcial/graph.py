@@ -325,3 +325,33 @@ class Graph(List):
         from_vertex = search_in_forest(forest, origin_vertex)
         
         return forest[from_vertex] if from_vertex is not None else forest
+
+    def reconstruct_path(self, dijkstra_result: Stack, destination: str):
+        """
+        Reconstruye el camino más corto desde el resultado de Dijkstra a un destino específico.
+
+        Args:
+            dijkstra_result (Stack): La pila devuelta por el método dijkstra.
+            destination (str): El nombre del vértice de destino.
+
+        Returns:
+            tuple[Stack, int]: Una tupla conteniendo una pila con el camino y el costo total.
+        """
+        path = Stack()
+        cost = -1
+
+        # 1. Convertir la pila de resultados a un diccionario para acceso rápido
+        path_data = {}
+        while dijkstra_result.size() > 0:
+            item = dijkstra_result.pop()
+            path_data[item[0]] = item  # Clave: nombre del vértice
+
+        # 2. Reconstruir el camino hacia atrás desde el destino
+        if destination in path_data:
+            cost = path_data[destination][1]
+            current_name = destination
+            while current_name is not None:
+                path.push(current_name)
+                current_name = path_data[current_name][2] # Moverse al predecesor
+        
+        return path, cost
