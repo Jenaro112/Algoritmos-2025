@@ -162,8 +162,6 @@ def punto_f():
     print("\n" + "="*50)
     print("--- f. Conteo de Pokémon por tipo ---")
     print("="*50)
-    # La clase BinaryTree no tiene un método para contar los nodos de los subárboles directamente.
-    # Lo resolvemos recorriendo el árbol de tipos e imprimiendo el tamaño de cada subárbol.
     def count_types(root):
         if root is not None:
             count_types(root.left)
@@ -177,7 +175,6 @@ def punto_g():
     print("\n" + "="*50)
     print("--- g. Conteo de Pokémon con Megaevolución ---")
     print("="*50)
-    # La clase BinaryTree no tiene un método específico para esto. Lo resolvemos con un recorrido.
     count = 0
     for pokemon in pokemon_list:
         if pokemon.has_mega:

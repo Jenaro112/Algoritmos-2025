@@ -18,7 +18,6 @@ print("JENARO GALDINI")
 print("----------------------------------------")
 
 def cargar_grafo_star_wars():
-    """Punto c. Carga los personajes y sus relaciones en el grafo."""
     g = Graph()
     
     # Personajes y el número de episodios en los que aparecen
@@ -51,7 +50,6 @@ def cargar_grafo_star_wars():
     return g
 
 def punto_a(g):
-    """a. Hallar el árbol de expansión mínimo desde C-3PO, Yoda y Leia."""
     print("\n" + "="*50)
     print("--- a. Árbol de Expansión Mínimo ---")
     print("="*50)
@@ -69,7 +67,6 @@ def punto_a(g):
         print(f"  Total de episodios en el MST: {total_episodios}")
 
 def punto_b(g):
-    """b. Determinar el número máximo de episodios compartidos."""
     print("\n" + "="*50)
     print("--- b. Máximo de episodios compartidos ---")
     print("="*50)
@@ -92,7 +89,6 @@ def punto_b(g):
         print(f"  - {p1} y {p2}")
 
 def punto_d(g):
-    """d. Calcular caminos más cortos."""
     print("\n" + "="*50)
     print("--- d. Caminos más cortos ---")
     print("="*50)
@@ -109,7 +105,6 @@ def punto_d(g):
             print(f"  Episodios (costo): {cost}")
 
 def punto_e(g):
-    """e. Indicar qué personajes aparecieron en los nueve episodios."""
     print("\n" + "="*50)
     print("--- e. Personajes en los 9 episodios ---")
     print("="*50)
