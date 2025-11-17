@@ -12,6 +12,11 @@ from graph import Graph
 from stack import Stack
 from typing import Any
 
+print("----------------------------------------")
+print("2DO PARCIAL DE ALGORITMOS Y ESTRUCTURAS DE DATOS")
+print("JENARO GALDINI")
+print("----------------------------------------")
+
 def cargar_grafo_star_wars():
     """Punto c. Carga los personajes y sus relaciones en el grafo."""
     g = Graph()
