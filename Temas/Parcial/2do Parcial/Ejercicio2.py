@@ -1,21 +1,21 @@
 """
 * Dado un grafo no dirigido con personajes de la saga Star Wars, implementar los algoritmos necesarios para resolver las siguientes tareas:
-*-  cada vértice debe almacenar el nombre de un personaje, las aristas representan la cantidad de episodios en los que aparecieron juntos ambos personajes que se relacionan;
-*-  a.hallar el árbol de expansión mínimo desde el vértice que contiene a: C-3PO, Yoda y Leia;
-*-  determinar cuál es el número máximo de episodio que comparten dos personajes, e indicar todos los pares de personajes que coinciden con dicho número;
-*-  cargue al menos los siguientes personajes: Luke Skywalker, Darth Vader, Yoda, Boba Fett, C-3PO, Leia, Rey, Kylo Ren, Chewbacca, Han Solo, R2-D2, BB-8;
-*-  calcule el camino mas ccorto desde: C-3PO a R2-D2 y desde Yoda a Darth Vader;
-*-  indicar qué personajes aparecieron en los nueve episodios de la saga
+* cada vértice debe almacenar el nombre de un personaje, las aristas representan la cantidad de episodios en los que aparecieron juntos ambos personajes que se relacionan;
+*-  a.  hallar el árbol de expansión mínimo desde el vértice que contiene a: C-3PO, Yoda y Leia;
+*-  b.  determinar cuál es el número máximo de episodio que comparten dos personajes, e indicar todos los pares de personajes que coinciden con dicho número;
+*-  c.  cargue al menos los siguientes personajes: Luke Skywalker, Darth Vader, Yoda, Boba Fett, C-3PO, Leia, Rey, Kylo Ren, Chewbacca, Han Solo, R2-D2, BB-8;
+*-  d.  calcule el camino mas ccorto desde: C-3PO a R2-D2 y desde Yoda a Darth Vader;
+*-  e.  indicar qué personajes aparecieron en los nueve episodios de la saga
 """
 
 from graph import Graph
 from stack import Stack
 from typing import Any
 
-print("----------------------------------------")
-print("2DO PARCIAL DE ALGORITMOS Y ESTRUCTURAS DE DATOS")
-print("JENARO GALDINI")
-print("----------------------------------------")
+print("╔" + "═"*50 + "╗")
+print("║" + "2DO PARCIAL DE ALGORITMOS Y ESTRUCTURAS DE DATOS".center(50) + "║")
+print("║" + "JENARO GALDINI".center(50) + "║")
+print("╚" + "═"*50 + "╝")
 
 def cargar_grafo_star_wars():
     g = Graph()
@@ -50,26 +50,26 @@ def cargar_grafo_star_wars():
     return g
 
 def punto_a(g):
-    print("\n" + "="*50)
-    print("--- a. Árbol de Expansión Mínimo ---")
-    print("="*50)
+    print("\n" + "╔" + "═"*50 + "╗")
+    print("║" + " a. Árbol de Expansión Mínimo".ljust(50) + "║")
+    print("╚" + "═"*50 + "╝")
     personajes_mst = ["C-3PO", "Yoda", "Leia"]
     for personaje in personajes_mst:
         mst_str = g.kruskal(personaje)
         total_episodios = 0
-        print(f"\n> MST desde '{personaje}':")
+        print(f"\n  ● MST para '{personaje}':")
         for edge in mst_str.split(';'):
             parts = edge.split('-')
             if len(parts) == 3:
                 p1, p2, peso = parts
                 total_episodios += int(peso)
-                print(f"  - {p1} <-> {p2} ({peso} episodios)")
-        print(f"  Total de episodios en el MST: {total_episodios}")
+                print(f"    › {p1} ↔ {p2} ({peso} episodios)")
+        print(f"\n    Costo total del MST: {total_episodios} episodios")
 
 def punto_b(g):
-    print("\n" + "="*50)
-    print("--- b. Máximo de episodios compartidos ---")
-    print("="*50)
+    print("\n" + "╔" + "═"*50 + "╗")
+    print("║" + " b. Máximo de episodios compartidos".ljust(50) + "║")
+    print("╚" + "═"*50 + "╝")
     max_episodios = 0
     pares = []
     for i in range(len(g)):
@@ -83,20 +83,20 @@ def punto_b(g):
                 if (arista.value, personaje.value) not in pares:
                     pares.append((personaje.value, arista.value))
     
-    print(f"El número máximo de episodios compartidos es: {max_episodios}")
-    print("Pares de personajes que coinciden:")
+    print(f"\n  ● El número máximo de episodios compartidos es: {max_episodios}")
+    print("  ● Pares de personajes que coinciden:")
     for p1, p2 in pares:
-        print(f"  - {p1} y {p2}")
+        print(f"    › {p1} y {p2}")
 
 def punto_d(g):
-    print("\n" + "="*50)
-    print("--- d. Caminos más cortos ---")
-    print("="*50)
+    print("\n" + "╔" + "═"*50 + "╗")
+    print("║" + " d. Caminos más cortos".ljust(50) + "║")
+    print("╚" + "═"*50 + "╝")
     caminos = [("C-3PO", "R2-D2"), ("Yoda", "Darth Vader")]
     for origen, destino in caminos:
         path_info = g.dijkstra(origen)
         path, cost = g.reconstruct_path(path_info, destino)
-        print(f"\n> Camino más corto de '{origen}' a '{destino}':")
+        print(f"\n  ● Camino más corto de '{origen}' a '{destino}':")
         if cost != -1:
             path_str = ""
             while path.size() > 0:
@@ -105,13 +105,13 @@ def punto_d(g):
             print(f"  Episodios (costo): {cost}")
 
 def punto_e(g):
-    print("\n" + "="*50)
-    print("--- e. Personajes en los 9 episodios ---")
-    print("="*50)
+    print("\n" + "╔" + "═"*50 + "╗")
+    print("║" + " e. Personajes en los 9 episodios de la saga".ljust(50) + "║")
+    print("╚" + "═"*50 + "╝")
     for i in range(len(g)):
         personaje = g[i]
         if personaje.other_values and personaje.other_values.get('episodes') == 9:
-            print(f" - {personaje.value}")
+            print(f"  › {personaje.value}")
 
 def main():
     grafo_sw = cargar_grafo_star_wars()

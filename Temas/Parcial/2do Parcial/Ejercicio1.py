@@ -11,10 +11,11 @@
 """
 
 from tree import BinaryTree
-print("----------------------------------------")
-print("2DO PARCIAL DE ALGORITMOS Y ESTRUCTURAS DE DATOS")
-print("JENARO GALDINI")
-print("----------------------------------------")
+
+print("╔" + "═"*50 + "╗")
+print("║" + "2DO PARCIAL DE ALGORITMOS Y ESTRUCTURAS DE DATOS".center(50) + "║")
+print("║" + "JENARO GALDINI".center(50) + "║")
+print("╚" + "═"*50 + "╝")
 
 class Pokemon:
     def __init__(self, name, number, types, weaknesses, has_mega, has_gigantamax):
@@ -83,121 +84,134 @@ pokemon_list = [
     Pokemon("Tyrantrum", 697, ["Roca", "Dragón"], ["Hielo", "Lucha", "Tierra", "Acero", "Dragón", "Hada"], False, False),
 ]
 
-# a. Creación de los tres árboles
-name_tree = BinaryTree()
-number_tree = BinaryTree()
-type_tree = BinaryTree()
+def punto_a():
+    """a. Creación de los tres árboles"""
+    name_tree = BinaryTree()
+    number_tree = BinaryTree()
+    type_tree = BinaryTree()
 
-for pokemon in pokemon_list:
-    name_tree.insert(pokemon.name, pokemon)
-    number_tree.insert(pokemon.number, pokemon)
-    for type_ in pokemon.types:
-        type_node = type_tree.search(type_)
-        if type_node:
-            type_node.other_values.insert(pokemon.name, pokemon)
-        else:
-            sub_tree = BinaryTree()
-            sub_tree.insert(pokemon.name, pokemon)
-            type_tree.insert(type_, sub_tree)
+    for pokemon in pokemon_list:
+        name_tree.insert(pokemon.name, pokemon)
+        number_tree.insert(pokemon.number, pokemon)
+        for type_ in pokemon.types:
+            type_node = type_tree.search(type_)
+            if type_node:
+                type_node.other_values.insert(pokemon.name, pokemon)
+            else:
+                sub_tree = BinaryTree()
+                sub_tree.insert(pokemon.name, pokemon)
+                type_tree.insert(type_, sub_tree)
 
-print("Árboles de Pokémon creados y cargados.")
+    print("\n" + "╔" + "═"*50 + "╗")
+    print("║" + " a. Creación de los árboles".ljust(50) + "║")
+    print("╚" + "═"*50 + "╝")
+    print("Arboles creados exitosamente.")
+    return name_tree, number_tree, type_tree
 
-def punto_b():
-    print("\n" + "="*50)
-    print("--- b. Búsqueda por número y nombre ---")
-    print("="*50)
+
+def punto_b(name_tree, number_tree):
+    print("\n" + "╔" + "═"*50 + "╗")
+    print("║" + " b. Búsqueda por número y nombre".ljust(50) + "║")
+    print("╚" + "═"*50 + "╝")
     # Búsqueda por número
     num_to_search = 150
-    print(f"\n> Buscando Pokémon número {num_to_search}:")
+    print(f"\n  ● Buscando Pokémon número {num_to_search}:")
     pokemon_node = number_tree.search(num_to_search)
     if pokemon_node:
-        print(f"  > {pokemon_node.other_values}")
+        print(f"    › {pokemon_node.other_values}")
     
     # Búsqueda por proximidad de nombre
     name_to_search = "bul"
-    print(f"\n> Buscando Pokémon que contengan '{name_to_search}':")
+    print(f"\n  ● Buscando Pokémon que contengan '{name_to_search}':")
     name_tree.proximity_search(name_to_search)
 
-def punto_c():
-    print("\n" + "="*50)
-    print("--- c. Pokémon por tipo ---")
-    print("="*50)
+def punto_c(type_tree):
+    print("\n" + "╔" + "═"*50 + "╗")
+    print("║" + " c. Pokémon por tipo".ljust(50) + "║")
+    print("╚" + "═"*50 + "╝")
     types_to_list = ["Fantasma", "Fuego", "Acero", "Eléctrico"]
     for type_ in types_to_list:
-        print(f"\n--- TIPO {type_.upper()} ---")
+        print(f"\n  ● TIPO {type_.upper()}:")
         type_node = type_tree.search(type_)
         if type_node:
             type_node.other_values.in_order()
         else:
-            print(f"No hay Pokémon de tipo {type_} en la lista.")
+            print(f"    › No hay Pokémon de tipo {type_} en la lista.")
 
-def punto_d():
-    print("\n" + "="*50)
-    print("--- d. Listados ordenados ---")
-    print("="*50)
-    print("\n> Listado por nombre (ascendente):")
-    name_tree.in_order()
-    print("\n> Listado por número (ascendente):")
-    number_tree.in_order()
-    # "Listado por nivel por nombre" se interpreta como in-order por nombre, que es el mismo que el primero.
-    print("\n> Listado por nivel por nombre (in-order):")
-    name_tree.in_order()
+def punto_d(name_tree, number_tree):    
+    print("\n" + "╔" + "═"*50 + "╗")
+    print("║" + " d. Listados ordenados".ljust(50) + "║")
+    print("╚" + "═"*50 + "╝")
 
-def punto_e():
-    print("\n" + "="*50)
-    print("--- e. Pokémon débiles contra Jolteon, Lycanroc y Tyrantrum ---")
-    print("="*50)
+    def print_pokemon_list(root):
+        """Función auxiliar para imprimir la lista de Pokémon de forma ordenada y limpia."""
+        if root is not None:
+            print_pokemon_list(root.left)
+            print(f"    › {root.other_values}")
+            print_pokemon_list(root.right)
+
+    print("\n  ● Listado por nombre (ascendente):")
+    print_pokemon_list(name_tree.root)
+    
+    print("\n  ● Listado por número (ascendente):")
+    print_pokemon_list(number_tree.root)
+
+def punto_e(name_tree):
+    print("\n" + "╔" + "═"*50 + "╗")
+    print("║" + " e. Pokémon débiles contra...".ljust(50) + "║")
+    print("╚" + "═"*50 + "╝")
     targets = ["Jolteon", "Lycanroc", "Tyrantrum"]
     for target_name in targets:
         target_node = name_tree.search(target_name)
         if target_node:
             target_pokemon = target_node.other_values
-            print(f"\nPokémon que son débiles contra {target_pokemon.name} (que es de tipo/s {target_pokemon.types}):")
+            print(f"\n  ● Pokémon débiles contra {target_pokemon.name} (tipo/s {target_pokemon.types}):")
             for pokemon in pokemon_list:
                 # Un pokémon es débil si alguno de los tipos del atacante está en su lista de debilidades
                 if any(t in pokemon.weaknesses for t in target_pokemon.types):
-                    print(f" - {pokemon.name} es débil.")
+                    print(f"    › {pokemon.name} es débil.")
 
-def punto_f():
-    print("\n" + "="*50)
-    print("--- f. Conteo de Pokémon por tipo ---")
-    print("="*50)
+def punto_f(type_tree):
+    print("\n" + "╔" + "═"*50 + "╗")
+    print("║" + " f. Conteo de Pokémon por tipo".ljust(50) + "║")
+    print("╚" + "═"*50 + "╝")
     def count_types(root):
         if root is not None:
             count_types(root.left)
             # Usamos el nuevo método size() que agregamos a la clase BinaryTree.
-            print(f"Tipo: {root.value}, Cantidad: {root.other_values.size()}")
+            print(f"  ● Tipo: {root.value}, Cantidad: {root.other_values.size()}")
             count_types(root.right)
     if type_tree.root:
         count_types(type_tree.root)
 
 def punto_g():
-    print("\n" + "="*50)
-    print("--- g. Conteo de Pokémon con Megaevolución ---")
-    print("="*50)
+    print("\n" + "╔" + "═"*50 + "╗")
+    print("║" + " g. Conteo de Pokémon con Megaevolución".ljust(50) + "║")
+    print("╚" + "═"*50 + "╝")
     count = 0
     for pokemon in pokemon_list:
         if pokemon.has_mega:
             count += 1
-    print(f"Hay {count} Pokémon con megaevolución.")
+    print(f"\n  ● Hay {count} Pokémon con megaevolución.")
 
 def punto_h():
-    print("\n" + "="*50)
-    print("--- h. Conteo de Pokémon con forma Gigantamax ---")
-    print("="*50)
+    print("\n" + "╔" + "═"*50 + "╗")
+    print("║" + " h. Conteo de Pokémon con forma Gigantamax".ljust(50) + "║")
+    print("╚" + "═"*50 + "╝")
     count = 0
     for pokemon in pokemon_list:
         if pokemon.has_gigantamax:
             count += 1
-    print(f"Hay {count} Pokémon con forma Gigantamax.")
+    print(f"\n  ● Hay {count} Pokémon con forma Gigantamax.")
 
 
 def main():
-    punto_b()
-    punto_c()
-    punto_d()
-    punto_e()
-    punto_f()
+    name_tree, number_tree, type_tree = punto_a()
+    punto_b(name_tree, number_tree)
+    punto_c(type_tree)
+    punto_d(name_tree, number_tree)
+    punto_e(name_tree)
+    punto_f(type_tree)
     punto_g()
     punto_h()
 
