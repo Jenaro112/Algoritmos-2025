@@ -142,32 +142,3 @@ class HeapMin:
                 self.sink(index)
             elif new_priority < previous_priority:
                 self.float(index)
-
-# priority_queue = HeapMin()
-
-# priority_queue.arrive('x', 1)
-# priority_queue.arrive('b', 2)
-# priority_queue.arrive('a', 2)
-# priority_queue.arrive('f', 1)
-# priority_queue.arrive('y', 1)
-# priority_queue.arrive('j', 2)
-# priority_queue.arrive('z', 3)
-# print(priority_queue.elements)
-
-# while priority_queue.size() > 0:
-#     print(priority_queue.attention())
-
-# h = HeapMin()
-# h.add(19)
-# h.add(5)
-# h.add(1)
-# h.add(3)
-# h.add(9)
-
-
-# list_sort = h.heapsort()
-
-# print(list_sort)
-# print(h.elements)
-
-

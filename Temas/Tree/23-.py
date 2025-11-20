@@ -41,6 +41,7 @@ Cerbero                   | -                  | Jabalí de Erimanto     | -
 """
 from tree import BinaryTree
 from collections import Counter
+from MiLibreria import imprimir_titulo, imprimir_subtitulo, imprimir_mensaje, imprimir_separador
 
 criaturas_data = [
     {"nombre": "Ceto", "derrotado_por": None, "descripcion": "Una deidad marina primordial.", "capturada_por": None},
@@ -89,7 +90,7 @@ for criatura in criaturas_data:
 
 # a. listado inorden de las criaturas y quienes la derrotaron;
 def punto_a(arbol):
-    print("a. Listado inorden de criaturas y quién las derrotó:")
+    imprimir_subtitulo("a. Listado inorden de criaturas y quién las derrotó")
     def in_order_derrotado(root):
         if root is not None:
             in_order_derrotado(root.left)
@@ -100,7 +101,7 @@ def punto_a(arbol):
 
 # b. se debe permitir cargar una breve descripción sobre cada criatura; (Ya incluido en la carga inicial)
 def punto_b(arbol):
-    print("\nb. Descripciones de cada criatura:")
+    imprimir_subtitulo("b. Descripciones de cada criatura")
     def __mostrar_descripciones(root):
         if root is not None:
             __mostrar_descripciones(root.left)
@@ -112,18 +113,18 @@ def punto_b(arbol):
 
 # c. mostrar toda la información de la criatura Talos;
 def punto_c(arbol, nombre_criatura):
-    print(f"\nc. Información completa de '{nombre_criatura}':")
+    imprimir_subtitulo(f"c. Información completa de '{nombre_criatura}'")
     nodo = arbol.search(nombre_criatura)
     if nodo:
         print(f"   - Nombre: {nodo.value}")
         for key, value in nodo.other_values.items():
             print(f"   - {key.replace('_', ' ').capitalize()}: {value or 'No disponible'}")
     else:
-        print(f"   No se encontró a '{nombre_criatura}'.")
+        imprimir_mensaje(f"No se encontró a '{nombre_criatura}'.", "alerta")
 
 # d. determinar los 3 héroes o dioses que derrotaron mayor cantidad de criaturas;
 def punto_d(arbol):
-    print("\nd. Top 3 héroes/dioses con más victorias:")
+    imprimir_subtitulo("d. Top 3 héroes/dioses con más victorias")
     derrotas = Counter()
     def contar_derrotas(root):
         if root is not None:
@@ -137,7 +138,7 @@ def punto_d(arbol):
 
 # e. listar las criaturas derrotadas por Heracles;
 def punto_e(arbol, heroe):
-    print(f"\ne. Criaturas derrotadas por {heroe}:")
+    imprimir_subtitulo(f"e. Criaturas derrotadas por {heroe}")
     criaturas_derrotadas = []
     def buscar_por_heroe(root):
         if root is not None:
@@ -150,11 +151,11 @@ def punto_e(arbol, heroe):
         for c in criaturas_derrotadas:
             print(f"   - {c}")
     else:
-        print(f"   {heroe} no derrotó a ninguna criatura de la lista.")
+        imprimir_mensaje(f"{heroe} no derrotó a ninguna criatura de la lista.", "info")
 
 # f. listar las criaturas que no han sido derrotadas;
 def punto_f(arbol):
-    print("\nf. Criaturas no derrotadas:")
+    imprimir_subtitulo("f. Criaturas no derrotadas")
     def no_derrotadas(root):
         if root is not None:
             no_derrotadas(root.left)
@@ -165,17 +166,17 @@ def punto_f(arbol):
 
 # g. y h. Modificar nodos para indicar capturas por Heracles
 def punto_h(arbol):
-    print("\nh. Actualizando capturas por Heracles...")
+    imprimir_subtitulo("h. Actualizando capturas por Heracles")
     criaturas_a_capturar = ["Cerbero", "Toro de Creta", "Cierva de Cerinea", "Jabalí de Erimanto"]
     for nombre in criaturas_a_capturar:
         nodo = arbol.search(nombre)
         if nodo:
             nodo.other_values["capturada_por"] = "Heracles"
-            print(f"   - '{nombre}' ha sido marcada como capturada por Heracles.")
+            imprimir_mensaje(f"'{nombre}' ha sido marcada como capturada por Heracles.", "exito")
 
 # i. se debe permitir búsquedas por coincidencia;
 def punto_i(arbol, coincidencia):
-    print(f"\ni. Búsqueda por coincidencia para '{coincidencia}':")
+    imprimir_subtitulo(f"i. Búsqueda por coincidencia para '{coincidencia}'")
     # La función proximity_search original solo imprime, no devuelve una lista.
     # Para poder verificar si hubo resultados, creamos una función local que sí los recolecte.
     resultados = []
@@ -192,39 +193,39 @@ def punto_i(arbol, coincidencia):
         for r in resultados:
             print(f"   - Encontrado: {r}")
     else:
-        print(f"   No se encontraron criaturas que comiencen con '{coincidencia}'.")
+        imprimir_mensaje(f"No se encontraron criaturas que comiencen con '{coincidencia}'.", "alerta")
 
 # j. eliminar al Basilisco y a las Sirenas;
 def punto_j(arbol):
-    print("\nj. Eliminando criaturas...")
+    imprimir_subtitulo("j. Eliminando criaturas")
     for nombre in ["Basilisco", "Sirenas"]:
         valor, _ = arbol.delete(nombre)
         if valor:
-            print(f"   - '{valor}' ha sido eliminado del árbol.")
+            imprimir_mensaje(f"'{valor}' ha sido eliminado del árbol.", "info")
         else:
-            print(f"   - No se pudo eliminar a '{nombre}' (no encontrado).")
+            imprimir_mensaje(f"No se pudo eliminar a '{nombre}' (no encontrado).", "error")
 
 # k. modificar el nodo que contiene a las Aves del Estínfalo
 def punto_k(arbol):
-    print("\nk. Modificando a las Aves del Estínfalo...")
+    imprimir_subtitulo("k. Modificando a las Aves del Estínfalo")
     nodo = arbol.search("Aves del Estínfalo")
     if nodo:
         nodo.other_values["derrotado_por"] = "Heracles"
         nodo.other_values["descripcion"] += " Heracles derrotó a varias de ellas como parte de sus doce trabajos."
-        print("   - Nodo modificado. Ahora derrotadas por Heracles y descripción actualizada.")
+        imprimir_mensaje("Nodo modificado. Ahora derrotadas por Heracles y descripción actualizada.", "exito")
 
 # l. modifique el nombre de la criatura Ladón por Dragón Ladón;
 def punto_l(arbol):
-    print("\nl. Renombrando a Ladón...")
+    imprimir_subtitulo("l. Renombrando a Ladón")
     valor, datos = arbol.delete("Ladón")
     if valor:
         datos["nombre"] = "Dragón Ladón"
         arbol.insert("Dragón Ladón", datos)
-        print("   - 'Ladón' ha sido renombrado a 'Dragón Ladón'.")
+        imprimir_mensaje("'Ladón' ha sido renombrado a 'Dragón Ladón'.", "exito")
 
 # m. realizar un listado por nivel del árbol;
 def punto_m(arbol):
-    print("\nm. Listado por nivel del árbol:")
+    imprimir_subtitulo("m. Listado por nivel del árbol")
     arbol.by_level()
 
 # n. muestre las criaturas capturadas por Heracles.
@@ -243,33 +244,24 @@ def punto_n(arbol, heroe):
         for c in criaturas_capturadas:
             print(f"   - {c}")
     else:
-        print(f"   {heroe} no ha capturado ninguna criatura.")
+        imprimir_mensaje(f"{heroe} no ha capturado ninguna criatura.", "info")
+
+def main():
+    imprimir_titulo("Ejercicio 23")
+    punto_a(arbol_criaturas)
+    punto_b(arbol_criaturas)
+    punto_c(arbol_criaturas, "Talos")
+    punto_d(arbol_criaturas)
+    punto_e(arbol_criaturas, "Heracles")
+    punto_f(arbol_criaturas)
+    punto_h(arbol_criaturas)
+    punto_i(arbol_criaturas, "Cer")
+    punto_j(arbol_criaturas)
+    punto_k(arbol_criaturas)
+    punto_l(arbol_criaturas)
+    punto_m(arbol_criaturas)
+    punto_n(arbol_criaturas, "Heracles")
+    imprimir_separador()
 
 if __name__ == "__main__":
-    print('-' * 50)
-    punto_a(arbol_criaturas)
-    print('-' * 50)
-    punto_b(arbol_criaturas)
-    print('-' * 50)
-    punto_c(arbol_criaturas, "Talos")
-    print('-' * 50)
-    punto_d(arbol_criaturas)
-    print('-' * 50)
-    punto_e(arbol_criaturas, "Heracles")
-    print('-' * 50)
-    punto_f(arbol_criaturas)
-    print('-' * 50)
-    punto_h(arbol_criaturas)
-    print('-' * 50)
-    punto_i(arbol_criaturas, "Cer")
-    print('-' * 50)
-    punto_j(arbol_criaturas)
-    print('-' * 50)
-    punto_k(arbol_criaturas)
-    print('-' * 50)
-    punto_l(arbol_criaturas)
-    print('-' * 50)
-    punto_m(arbol_criaturas)
-    print('-' * 50)
-    punto_n(arbol_criaturas, "Heracles")
-    print('-' * 50)
+    main()

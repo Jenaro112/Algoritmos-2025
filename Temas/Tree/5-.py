@@ -15,6 +15,7 @@ g. generar un bosque a partir de este árbol, un árbol debe contener a los supe
 
 from tree import BinaryTree
 from super_heroes_data import superheroes
+from MiLibreria import imprimir_titulo, imprimir_subtitulo, imprimir_mensaje, imprimir_separador
 
 # --- Funciones auxiliares para recorridos específicos ---
 
@@ -61,64 +62,58 @@ def count_nodes(root):
 
 def Punto_A():
     """Punto A: Carga de datos en el árbol."""
-    print("Punto A")
     mcu_tree = BinaryTree()
     for character in superheroes:
         mcu_tree.insert(character['name'], character)
-    print("-> Árbol de personajes cargado exitosamente.")
+    imprimir_mensaje("Árbol de personajes cargado exitosamente.", "exito")
     return mcu_tree
 
 def Punto_B(mcu_tree):
     """Punto B: Listar los villanos ordenados alfabéticamente."""
-    print("Punto B")
+    imprimir_mensaje("Listado de villanos (ver Punto G.II para la lista completa).", "info")
     mcu_tree.villain_in_order()
 
 def Punto_C(mcu_tree):
     """Punto C: Mostrar todos los superhéroes que empiezan con C."""
-    print("Punto C")
     heroes_con_C = []
     in_order_filter_and_print(mcu_tree.root, "C", False, heroes_con_C)
     if heroes_con_C:
         for name in heroes_con_C:
             print(f"   - {name}")
     else:
-        print("   No se encontraron superhéroes que comiencen con 'C'.")
+        imprimir_mensaje("No se encontraron superhéroes que comiencen con 'C'.", "alerta")
 
 def Punto_D(mcu_tree):
     """Punto D: Determinar cuántos superhéroes hay en el árbol."""
-    print("Punto D")
-    print(f"-> Hay {mcu_tree.count_heroes()} superhéroes en el árbol.")
+    imprimir_mensaje(f"Hay {mcu_tree.count_heroes()} superhéroes en el árbol (ver Punto G.I para el conteo exacto).", "info")
 
 def Punto_E(mcu_tree):
     """Punto E: Corrección de 'Dr Strannnnnge'."""
-    print("Punto E")
     incorrect_name = "Dr Strannnnnge"
     correct_name = "Dr Strange"
 
-    print(f"-> Buscando personajes que comienzan con 'Dr':")
+    imprimir_mensaje("Buscando personajes que comienzan con 'Dr' por proximidad:", "info")
     mcu_tree.proximity_search('Dr')
 
     value, other_value = mcu_tree.delete(incorrect_name)
     if value is not None:
         other_value['name'] = correct_name
         mcu_tree.insert(correct_name, other_value)
-        print(f"-> Se ha corregido el nombre de '{incorrect_name}' a '{correct_name}'.")
+        imprimir_mensaje(f"Se ha corregido el nombre de '{incorrect_name}' a '{correct_name}'.", "exito")
     else:
-        print(f"No se encontró a '{incorrect_name}' para modificar.")
+        imprimir_mensaje(f"No se encontró a '{incorrect_name}' para modificar.", "error")
 
 def Punto_F(mcu_tree):
     """Punto F: Listar superhéroes ordenados de manera descendente."""
-    print("Punto F")
     superheroes_desc = []
     if mcu_tree.root:
         in_order_desc(mcu_tree.root, superheroes_desc)
 
     for i, name in enumerate(superheroes_desc):
-        print(f"{i+1}. {name}")
+        print(f"   {i+1}. {name}")
 
 def Punto_G(mcu_tree):
     """Punto G: Generar y analizar bosque de héroes y villanos."""
-    print("Punto G")
     heroes_tree = BinaryTree() 
     villains_tree = BinaryTree()
 
@@ -140,18 +135,26 @@ def Punto_G(mcu_tree):
 
 
 if __name__ == "__main__":
-    print("-" * 40)
+    imprimir_titulo("Ejercicio 5")
+
+    imprimir_subtitulo("Punto A: Carga del Árbol de Personajes")
     mcu_tree = Punto_A()
-    print("-" * 40)
+    imprimir_separador()
+    imprimir_subtitulo("Punto B: Listar Villanos (In-Order)")
     Punto_B(mcu_tree)
-    print("-" * 40)
+    imprimir_separador()
+    imprimir_subtitulo("Punto C: Superhéroes que comienzan con 'C'")
     Punto_C(mcu_tree)
-    print("-" * 40)
+    imprimir_separador()
+    imprimir_subtitulo("Punto D: Conteo de Superhéroes")
     Punto_D(mcu_tree)
-    print("-" * 40)
+    imprimir_separador()
+    imprimir_subtitulo("Punto E: Corrección del nombre 'Dr Strange'")
     Punto_E(mcu_tree)
-    print("-" * 40)
+    imprimir_separador()
+    imprimir_subtitulo("Punto F: Listado Descendente de Personajes")
     Punto_F(mcu_tree)
-    print("-" * 40)
+    imprimir_separador()
+    imprimir_subtitulo("Punto G: Bosque de Héroes y Villanos")
     Punto_G(mcu_tree)
-    print("-" * 40)
+    imprimir_separador()

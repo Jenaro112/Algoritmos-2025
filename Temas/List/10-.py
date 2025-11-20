@@ -7,6 +7,7 @@
 """
 
 from list_ import List
+from MiLibreria import imprimir_titulo, imprimir_subtitulo, imprimir_mensaje, imprimir_separador
 
 
 class Cancion:
@@ -38,32 +39,40 @@ lista_canciones = List([
 def cancion_mas_larga():
     lista_canciones.add_criterion('duracion', order_by_duracion)
     lista_canciones.sort_by_criterion('duracion')
-    cancion_larga = lista_canciones[-1]
-    print("--- Canción más larga: ---")
-    print(f"La canción más larga es: {cancion_larga.nombre} de {cancion_larga.banda} con una duración de {cancion_larga.duracion} segundos.")
+    if lista_canciones:
+        cancion_larga = lista_canciones[-1]
+        imprimir_subtitulo("Canción más larga")
+        print(f"{cancion_larga.nombre} de {cancion_larga.banda} ({cancion_larga.duracion} segundos).")
 
 def top_canciones():
     lista_canciones.add_criterion('reproducciones', order_by_reproducciones)
     lista_canciones.sort_by_criterion('reproducciones')  # ordena de mayor a menor
-    print("--- TOP 5 Canciones más escuchadas: ---")
+    imprimir_subtitulo("TOP 5 Canciones más escuchadas")
     for cancion in lista_canciones[-1:-6:-1]:
-        print(f"-   {cancion.nombre}")
+        print(f"  - {cancion.nombre} ({cancion.reproducciones:,} reproducciones)")
 
 def Arctic_Monkeys():
     arctic_songs = List([cancion for cancion in lista_canciones if cancion.banda == "Arctic Monkeys"])
-    print("--- Canciones de Arctic Monkeys ---")
-    arctic_songs.show()
+    imprimir_subtitulo("Canciones de Arctic Monkeys")
+    if arctic_songs:
+        for cancion in arctic_songs:
+            print(f"  - {cancion.nombre}")
+    else:
+        imprimir_mensaje("No se encontraron canciones de Arctic Monkeys.", "alerta")
 
 def bandas():
     bandas_unicas = List(set(cancion.banda for cancion in lista_canciones if ' ' not in cancion.banda))
-    print("--- Bandas o artistas de una sola palabra: ---")
+    imprimir_subtitulo("Bandas o artistas de una sola palabra")
     for banda in bandas_unicas:
-        print("- " + banda)
+        print("  - " + banda)
 
+def main():
+    imprimir_titulo("Ejercicio 10")
+    cancion_mas_larga()
+    top_canciones()
+    Arctic_Monkeys()
+    bandas()
+    imprimir_separador()
 
-print("-" * 50)
-cancion_mas_larga()
-top_canciones()
-Arctic_Monkeys()
-bandas()
-print("-" * 50)
+if __name__ == "__main__":
+    main()

@@ -1,31 +1,34 @@
 from typing import Any, Optional
 
 class Queue:
-
+    """
+    Representa una estructura de datos de tipo Cola (Queue).
+    Funciona bajo el principio FIFO (First In, First Out), donde el primer
+    elemento en entrar es el primero en salir.
+    """
 
     def __init__(self):
         """
-        Inicializa una nueva instancia de la cola.
-        El atributo '__elements' es una lista privada que almacena los elementos de la cola.
+        Inicializa una nueva cola vacía.
+        Utiliza una lista interna de Python para almacenar los elementos.
         """
         self.__elements = []
 
     def arrive(self, value: Any) -> None:
         """
-        Agrega un elemento al final de la cola.
-        
+        Agrega un elemento al final (final de la cola).
+
         Args:
-            value (Any): El elemento a agregar a la cola.
+            value (Any): El elemento que se va a agregar a la cola.
         """
         self.__elements.append(value)
 
     def attention(self) -> Optional[Any]:
         """
-        Elimina y devuelve el primer elemento de la cola (el elemento "en atención").
-        Si la cola está vacía, devuelve None.
-        
+        Elimina y devuelve el elemento que se encuentra al frente de la cola.
+
         Returns:
-            Optional[Any]: El primer elemento de la cola o None si está vacía.
+            Optional[Any]: El elemento del frente, o None si la cola está vacía.
         """
         return (
             self.__elements.pop(0)
@@ -35,20 +38,19 @@ class Queue:
 
     def size(self) -> int:
         """
-        Devuelve el número actual de elementos en la cola.
-        
+        Devuelve el número de elementos que contiene la cola.
+
         Returns:
-            int: El número de elementos en la cola.
+            int: La cantidad de elementos en la cola.
         """
         return len(self.__elements)
     
     def on_front(self) -> Optional[Any]:
         """
-        Devuelve el primer elemento de la cola sin eliminarlo.
-        Si la cola está vacía, devuelve None.
-        
+        Devuelve el elemento del frente de la cola sin eliminarlo.
+
         Returns:
-            Optional[Any]: El primer elemento de la cola o None si está vacía.
+            Optional[Any]: El elemento del frente, o None si la cola está vacía.
         """
         return (
             self.__elements[0]
@@ -58,24 +60,22 @@ class Queue:
 
     def move_to_end(self) -> Optional[Any]:
         """
-        Mueve el primer elemento de la cola al final de la misma.
-        Esto simula que un elemento ha sido "atendido" y luego "vuelve a la fila".
-        Si la cola está vacía, no hace nada y devuelve None.
-        
+        Toma el elemento del frente de la cola y lo mueve al final.
+        Es útil para recorrer la cola sin perder sus elementos.
+
         Returns:
-            Optional[Any]: El elemento que fue movido al final, o None si la cola estaba vacía.
+            Optional[Any]: El elemento que fue movido, o None si la cola está vacía.
         """
         if self.__elements:
-            value = self.attention()  # Quita el primer elemento
-            self.arrive(value)        # Lo agrega al final
+            value = self.attention()
+            self.arrive(value)
             return value
-        return None
     
     def show(self):
         """
-        Muestra todos los elementos de la cola en el orden actual,
-        moviendo cada elemento al final de la cola después de imprimirlo.
-        Esto significa que la cola original se altera y los elementos se rotan.
+        Muestra todos los elementos de la cola de forma no destructiva.
+        Lo hace moviendo cada elemento al final y mostrándolo,
+        dejando la cola en su estado original al terminar.
         """
         for i in range(len(self.__elements)):
             print(self.move_to_end())

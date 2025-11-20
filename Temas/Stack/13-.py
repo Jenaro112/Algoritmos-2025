@@ -9,7 +9,7 @@ f. mostrar los nombre de los trajes utilizados en las películas “Spider-Man: 
 """
 
 from stack import Stack
-from colorama import init,Fore
+from MiLibreria import imprimir_titulo, imprimir_subtitulo, imprimir_mensaje
 
 # Diccionario de trajes
 trajes_ironman = [
@@ -34,41 +34,39 @@ for traje in trajes_ironman:
 def buscar_hulkbuster(pila: Stack):
     aux = Stack()
     peliculas = []
-    while not pila.is_empty():
+    while pila.size() > 0:
         traje = pila.pop()
         if traje["modelo"] == "Mark XLIV":
             peliculas.append(traje["pelicula"])
         aux.push(traje)
-    while not aux.is_empty():
+    while aux.size() > 0:
         pila.push(aux.pop())
     if peliculas:
-        print("El modelo Mark XLIV fue usado en:", peliculas)
+        print(f"El modelo Mark XLIV (Hulkbuster) fue usado en: {peliculas}")
     else:
-        print("El modelo Mark XLIV no fue usado.")
+        print("El modelo Mark XLIV (Hulkbuster) no fue encontrado.")
 
 # (b) Mostrar modelos dañados
 def mostrar_danados(pila: Stack):
     aux = Stack()
-    print("Modelos dañados:")
-    while not pila.is_empty():
+    while pila.size() > 0:
         traje = pila.pop()
         if traje["estado"] == "Dañado":
             print(f'  - {traje["modelo"]} en {traje["pelicula"]}')
         aux.push(traje)
-    while not aux.is_empty():
+    while aux.size() > 0:
         pila.push(aux.pop())
 
 # (c) Eliminar modelos destruidos
 def eliminar_destruidos(pila: Stack):
     aux = Stack()
-    print("Modelos destruidos eliminados:")
-    while not pila.is_empty():
+    while pila.size() > 0:
         traje = pila.pop()
         if traje["estado"] == "Destruido":
-            print(f'  - {traje["modelo"]} en {traje["pelicula"]}')
+            print(f"Eliminado: {traje['modelo']} de la película '{traje['pelicula']}'", "info")
         else:
             aux.push(traje)
-    while not aux.is_empty():
+    while aux.size() > 0:
         pila.push(aux.pop())
 
 # (e) Agregar Mark LXXXV si no existe en Endgame
@@ -80,34 +78,47 @@ def agregar_mark_85(pila: Stack):
     }
     aux = Stack()
     existe = False
-    while not pila.is_empty():
+    while pila.size() > 0:
         traje = pila.pop()
         if traje["modelo"] == nuevo_traje["modelo"] and traje["pelicula"] == nuevo_traje["pelicula"]:
             existe = True
         aux.push(traje)
-    while not aux.is_empty():
+    while aux.size() > 0:
         pila.push(aux.pop())
     if not existe:
         pila.push(nuevo_traje)
-        print("Se agregó el modelo Mark LXXXV.")
+        print("Se agregó el modelo Mark LXXXV a la pila.", "exito")
     else:
-        print("Ya existe el modelo Mark LXXXV en esa película.")
+        print("El modelo Mark LXXXV para 'Avengers: Endgame' ya existe.", "alerta")
 
 # (f) Mostrar trajes de Homecoming y Civil War
 def mostrar_trajes_peliculas(pila: Stack):
     aux = Stack()
-    print("Trajes en Spider-Man: Homecoming y Captain America: Civil War:")
-    while not pila.is_empty():
+    while pila.size() > 0:
         traje = pila.pop()
         if traje["pelicula"] in ["Spider-Man: Homecoming", "Captain America: Civil War"]:
             print(f'  - {traje["modelo"]} en {traje["pelicula"]}')
         aux.push(traje)
-    while not aux.is_empty():
+    while aux.size() > 0:
         pila.push(aux.pop())
 
+def main():
+    imprimir_titulo("ejercicio 13")
 
-buscar_hulkbuster(pila_trajes)
-mostrar_danados(pila_trajes)
-eliminar_destruidos(pila_trajes)
-agregar_mark_85(pila_trajes)
-mostrar_trajes_peliculas(pila_trajes)
+    imprimir_subtitulo("a. Búsqueda del modelo Mark XLIV (Hulkbuster)")
+    buscar_hulkbuster(pila_trajes)
+
+    imprimir_subtitulo("b. Modelos con estado 'Dañado'")
+    mostrar_danados(pila_trajes)
+
+    imprimir_subtitulo("c. Eliminación de modelos 'Destruidos'")
+    eliminar_destruidos(pila_trajes)
+
+    imprimir_subtitulo("e. Agregar modelo Mark LXXXV")
+    agregar_mark_85(pila_trajes)
+
+    imprimir_subtitulo("f. Trajes de 'Spider-Man: Homecoming' y 'Civil War'")
+    mostrar_trajes_peliculas(pila_trajes)
+
+if __name__ == "__main__":
+    main()
