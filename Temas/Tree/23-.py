@@ -39,7 +39,7 @@ Dragón de la Cólquida     | -                  | Basilisco              | -
 Cerbero                   | -                  | Jabalí de Erimanto     | -
 
 """
-from tree import BinaryTree
+import tree
 from collections import Counter
 from MiLibreria import imprimir_titulo, imprimir_subtitulo, imprimir_mensaje, imprimir_separador
 
@@ -84,7 +84,7 @@ criaturas_data = [
     {"nombre": "Jabalí de Erimanto", "derrotado_por": None, "descripcion": "Un jabalí que causaba estragos en Erimanto.", "capturada_por": None},
 ]
 
-arbol_criaturas = BinaryTree()
+arbol_criaturas = tree.BinaryTree()
 for criatura in criaturas_data:
     arbol_criaturas.insert(criatura["nombre"], criatura)
 
@@ -95,7 +95,7 @@ def punto_a(arbol):
         if root is not None:
             in_order_derrotado(root.left)
             derrotado_por = root.other_values.get("derrotado_por") or "Nadie"
-            print(f"- {root.value} (Derrotado por: {derrotado_por})")
+            print(f"    - {root.value} (Derrotado por: {derrotado_por})")
             in_order_derrotado(root.right)
     in_order_derrotado(arbol.root)
 
@@ -230,7 +230,7 @@ def punto_m(arbol):
 
 # n. muestre las criaturas capturadas por Heracles.
 def punto_n(arbol, heroe):
-    print(f"\nn. Criaturas capturadas por {heroe}:")
+    imprimir_subtitulo(f"n. Criaturas capturadas por {heroe}:")
     criaturas_capturadas = []
     def capturadas_por(root):
         if root is not None:
