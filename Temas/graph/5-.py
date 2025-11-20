@@ -12,58 +12,7 @@
 
 from graph import Graph
 from stack import Stack
-
-def get_path(path_info_original: Stack, destination: str):
-    """
-    Reconstruye el camino y calcula el costo desde la pila devuelta por Dijkstra.
-    """
-    path_stack = Stack()
-    # Clonar la pila original para no destruirla
-    aux_stack = Stack()
-    while path_info_original.size() > 0:
-        item = path_info_original.pop()
-        aux_stack.push(item)
-    while aux_stack.size() > 0:
-        item = aux_stack.pop()
-        path_info_original.push(item)
-        path_stack.push(item)
-
-    path = Stack()
-    cost = -1
-    
-    # Buscar el destino en la pila de resultados
-    current_data = None
-    while path_stack.size() > 0:
-        data = path_stack.pop()
-        if data[0] == destination:
-            current_data = data
-            break
-    
-    if current_data:
-        cost = current_data[1]
-        # Reconstruir el camino hacia atrás usando los predecesores
-        while current_data is not None:
-            path.push(current_data[0])
-            predecessor_name = current_data[2]
-            if predecessor_name is None:
-                break
-            
-            # Buscar el nodo predecesor en la pila original para continuar
-            found_predecessor = None
-            temp_stack = Stack()
-            while path_info_original.size() > 0:
-                search_data = path_info_original.pop()
-                temp_stack.push(search_data)
-                if search_data[0] == predecessor_name:
-                    found_predecessor = search_data
-            
-            # Restaurar la pila original
-            while temp_stack.size() > 0:
-                path_info_original.push(temp_stack.pop())
-            
-            current_data = found_predecessor
-
-    return path, cost
+from MiLibreria import imprimir_titulo, imprimir_subtitulo, imprimir_mensaje
 
 def PuntoA():
     """Punto a. Crea y carga el grafo de la red con todos los dispositivos y conexiones."""
@@ -93,25 +42,37 @@ def PuntoA():
     for origin, dest, weight in edges:
         g.insert_edge(origin, dest, weight)
     
-    print("Grafo de red cargado.")
+    imprimir_mensaje("Grafo de red cargado exitosamente.", "exito")
     return g
 
 def PuntoB(g, notebooks):
     """Punto b. Realiza barridos en profundidad y amplitud desde las notebooks."""
-    print("-" * 30)
     for notebook in notebooks:
-        print(f"\n--- Barrido en Profundidad (DFS) desde: {notebook} ---")
+        imprimir_mensaje(f"Barrido en Profundidad (DFS) desde: {notebook}", "info")
         g.deep_sweep(notebook)
-        print(f"\n--- Barrido en Amplitud (BFS) desde: {notebook} ---")
+        imprimir_mensaje(f"Barrido en Amplitud (BFS) desde: {notebook}", "info")
         g.amplitude_sweep(notebook)
 
 def PuntoC(g, pcs, destination):
     """Punto c. Encuentra y muestra el camino más corto desde varias PCs a un destino."""
-    print("-" * 30)
-    print(f"\n--- c. Camino más corto a la {destination} ---")
     for pc in pcs:
         path_info = g.dijkstra(pc)
-        path, cost = get_path(path_info, destination)
+        
+        # Convertir la pila de resultados de Dijkstra a un diccionario para fácil acceso
+        path_dict = {}
+        while path_info.size() > 0:
+            data = path_info.pop()
+            path_dict[data[0]] = (data[1], data[2]) # {vertice: (costo, predecesor)}
+
+        cost = -1
+        path = Stack()
+        if destination in path_dict:
+            cost = path_dict[destination][0]
+            current_vertex = destination
+            while current_vertex is not None:
+                path.push(current_vertex)
+                current_vertex = path_dict[current_vertex][1]
+
         print(f"Desde '{pc}':")
         if cost != -1:
             print(f"  Costo total: {cost}")
@@ -124,8 +85,6 @@ def PuntoC(g, pcs, destination):
 
 def PuntoD(g):
     """Punto d. Encuentra y muestra el Árbol de Expansión Mínima."""
-    print("-" * 30)
-    print("\n--- d. Árbol de Expansión Mínima (Kruskal) ---")
     mst_str = g.kruskal('Switch 1')
     total_weight = 0
     print("Aristas del MST:")
@@ -139,14 +98,22 @@ def PuntoD(g):
 
 def PuntoE(g):
     """Punto e. Determina qué PC (no notebook) tiene el camino más corto al servidor 'Guaraní'."""
-    print("-" * 30)
-    print("\n--- e. PC con camino más corto a 'Guaraní' ---")
     shortest_path_pc = {'pc': None, 'cost': float('inf')}
     for i in range(len(g)):
         vertex = g[i]
         if vertex.other_values and vertex.other_values.get('type') == 'pc':
             path_info = g.dijkstra(vertex.value)
-            _, cost = get_path(path_info, 'Guarani')
+            
+            # Convertir la pila de resultados a un diccionario
+            path_dict = {}
+            while path_info.size() > 0:
+                data = path_info.pop()
+                path_dict[data[0]] = (data[1], data[2])
+
+            cost = -1
+            if 'Guarani' in path_dict:
+                cost = path_dict['Guarani'][0]
+
             if cost != -1 and cost < shortest_path_pc['cost']:
                 shortest_path_pc['pc'] = vertex.value
                 shortest_path_pc['cost'] = cost
@@ -158,13 +125,21 @@ def PuntoE(g):
 
 def PuntoF(g):
     """Punto f. Indica qué computadora del Switch 1 tiene el camino más corto a 'MongoDB'."""
-    print("-" * 30)
-    print("\n--- f. Computadora en Switch 1 con camino más corto a 'MongoDB' ---")
     computers_on_switch1 = ['Debian', 'Ubuntu', 'Mint']
     shortest_path_sw1 = {'device': None, 'cost': float('inf')}
     for device in computers_on_switch1:
         path_info = g.dijkstra(device)
-        _, cost = get_path(path_info, 'MongoDB')
+
+        # Convertir la pila de resultados a un diccionario
+        path_dict = {}
+        while path_info.size() > 0:
+            data = path_info.pop()
+            path_dict[data[0]] = (data[1], data[2])
+
+        cost = -1
+        if 'MongoDB' in path_dict:
+            cost = path_dict['MongoDB'][0]
+
         if cost != -1 and cost < shortest_path_sw1['cost']:
             shortest_path_sw1['device'] = device
             shortest_path_sw1['cost'] = cost
@@ -174,39 +149,44 @@ def PuntoF(g):
 
 def PuntoG(g, pcs_to_print):
     """Punto g. Cambia la conexión de la impresora y recalcula los caminos más cortos."""
-    print("-" * 30)
-    print("\n--- g. Recalcular camino a la impresora tras cambio de conexión ---")
     g.delete_edge('Switch 1', 'Impresora', 'value')
     g.insert_edge('Router 2', 'Impresora', 20)
-    print("Conexión de la impresora cambiada a Router 2.")
+    imprimir_mensaje("Conexión de la impresora cambiada a Router 2.", "alerta")
     PuntoC(g, pcs_to_print, 'Impresora')
 
 def main():
     """Función principal que orquesta la resolución del problema."""
+    imprimir_titulo("Ejercicio 5")
+
     # a.
+    imprimir_subtitulo("Punto A: Carga del Grafo de Red")
     network_graph = PuntoA()
 
     # b.
+    imprimir_subtitulo("Punto B: Barridos de Red (DFS y BFS)")
     notebooks_to_scan = ['Red Hat', 'Debian', 'Arch']
     PuntoB(network_graph, notebooks_to_scan)
 
     # c.
+    imprimir_subtitulo("Punto C: Camino más corto a la Impresora")
     pcs_to_print = ['Manjaro', 'Red Hat', 'Fedora']
     PuntoC(network_graph, pcs_to_print, 'Impresora')
 
     # d.
+    imprimir_subtitulo("Punto D: Árbol de Expansión Mínima")
     PuntoD(network_graph)
 
     # e.
+    imprimir_subtitulo("Punto E: PC con camino más corto a 'Guaraní'")
     PuntoE(network_graph)
 
     # f.
+    imprimir_subtitulo("Punto F: Dispositivo en Switch 1 con camino más corto a 'MongoDB'")
     PuntoF(network_graph)
 
     # g.
+    imprimir_subtitulo("Punto G: Recalcular camino a la impresora tras cambio")
     PuntoG(network_graph, pcs_to_print)
-    
-    print("-" * 30)
 
 if __name__ == "__main__":
     main()
